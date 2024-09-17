@@ -5,18 +5,13 @@ import androidx.activity.ComponentActivity
 import androidx.activity.compose.setContent
 import androidx.activity.enableEdgeToEdge
 import androidx.compose.foundation.Image
-import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.Spacer
 import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.height
-import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.wrapContentSize
-import androidx.compose.material3.Button
-import androidx.compose.material3.ButtonColors
 import androidx.compose.material3.ElevatedButton
 import androidx.compose.material3.MaterialTheme
-import androidx.compose.material3.Scaffold
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.remember
@@ -47,6 +42,9 @@ class MainActivity : ComponentActivity() {
 @Composable
 fun ButtonImageWithText(modifier: Modifier = Modifier) {
     var stageNumber by remember {mutableStateOf(1)}
+    var numberOfSqueezesNeeded by remember {mutableStateOf((2..4).random())}
+    var numberOfSqueezes by remember {mutableStateOf(0)}
+
     var imageResource = when(stageNumber) {
         1 -> R.drawable.lemon_tree
         2 -> R.drawable.lemon_squeeze
@@ -60,18 +58,39 @@ fun ButtonImageWithText(modifier: Modifier = Modifier) {
         3 -> R.string.lemonade_drink
         else -> R.string.reset
     }
+
+    var lemonadeProcess: () -> Unit = {
+        if (stageNumber == 2 ) {
+            if (numberOfSqueezes == numberOfSqueezesNeeded) {
+                stageNumber++
+                numberOfSqueezes = 0
+                numberOfSqueezesNeeded = (2..4).random()
+            } else {
+                numberOfSqueezes++
+            }
+        }
+        else if (stageNumber == 4) {
+            stageNumber = 1
+
+        }
+        else
+            stageNumber++
+    }
+
     Column(modifier = modifier,horizontalAlignment = Alignment.CenterHorizontally) {
-        ElevatedButton(onClick = {}, ) {
-            Image(painter = painterResource(R.drawable.lemon_tree), contentDescription = "Lemon Tree")
+        ElevatedButton(onClick = lemonadeProcess ) {
+            Image(painter = painterResource(imageResource), contentDescription = "Lemon Tree")
         }
         Spacer(modifier = Modifier.height(16.dp))
-        Text(stringResource(R.string.lemon_tree), color = MaterialTheme.colorScheme.inversePrimary, fontSize = 18.sp)
+        Text(stringResource(stringResource), color = MaterialTheme.colorScheme.inversePrimary, fontSize = 18.sp)
     }
 }
 
 @Composable
 @Preview
 fun LemonadeApp() {
-    ButtonImageWithText(modifier = Modifier.fillMaxSize().wrapContentSize(Alignment.Center))
+    ButtonImageWithText(modifier = Modifier
+        .fillMaxSize()
+        .wrapContentSize(Alignment.Center))
 }
 
