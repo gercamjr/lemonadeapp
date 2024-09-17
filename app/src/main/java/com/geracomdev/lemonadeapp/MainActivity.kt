@@ -60,6 +60,7 @@ fun ButtonImageWithText(modifier: Modifier = Modifier) {
     }
 
     var lemonadeProcess: () -> Unit = {
+        // at stage two we want to check if lemon has been squeezed enough to make lemonade
         if (stageNumber == 2 ) {
             if (numberOfSqueezes == numberOfSqueezesNeeded) {
                 stageNumber++
