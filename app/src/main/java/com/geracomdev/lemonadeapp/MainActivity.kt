@@ -45,21 +45,21 @@ fun ButtonImageWithText(modifier: Modifier = Modifier) {
     var numberOfSqueezesNeeded by remember {mutableStateOf((2..4).random())}
     var numberOfSqueezes by remember {mutableStateOf(0)}
 
-    var imageResource = when(stageNumber) {
+    val imageResource = when(stageNumber) {
         1 -> R.drawable.lemon_tree
         2 -> R.drawable.lemon_squeeze
         3 -> R.drawable.lemon_drink
         else -> R.drawable.lemon_restart
     }
 
-    var stringResource = when (stageNumber) {
+    val stringResource = when (stageNumber) {
         1 -> R.string.lemon_tree
         2 -> R.string.lemon_squeeze
         3 -> R.string.lemonade_drink
         else -> R.string.reset
     }
 
-    var lemonadeProcess: () -> Unit = {
+    val lemonadeProcess: () -> Unit = {
         // at stage two we want to check if lemon has been squeezed enough to make lemonade
         if (stageNumber == 2 ) {
             if (numberOfSqueezes == numberOfSqueezesNeeded) {
